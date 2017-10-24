@@ -19,6 +19,8 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,8 +50,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 facebookID = loginResult.getAccessToken().getUserId();
-                final AccessToken accessToken = loginResult.getAccessToken();
+                AccessToken accessToken = loginResult.getAccessToken();
                 testText.setText(facebookID);
+                new FacebookCognitoSync().execute(accessToken.getToken());//Cognito integration that works as an async task in the background
             }
 
             @Override
@@ -75,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         cbManager.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
 
 }
