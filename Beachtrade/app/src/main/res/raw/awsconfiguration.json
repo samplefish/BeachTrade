@@ -1,0 +1,54 @@
+{
+  "CredentialsProvider": {
+    "CognitoIdentity": {
+      "Default": {
+        "PoolId": "us-east-1:6ec4d10e-5eff-4422-8388-af344a4a3923",
+        "Region": "us-east-1"
+      }
+    }
+  },
+  "IdentityManager": {
+    "Default": {}
+  },
+  "CognitoUserPool": {
+    "Default": {
+      "PoolId": "us-east-1_P5Dr6dp9o",
+      "AppClientId": "5fq94g78r6426v38qa8ohm3dg6",
+      "AppClientSecret": "1ruquftlsf0e9amhd40k9790hid3cjsm20kse4lkk2vber9el9dl",
+      "Region": "us-east-1"
+    }
+  },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "beachtrade-userfiles-mobilehub-845894310",
+      "Region": "us-east-1"
+    }
+  },
+  "Cognito": {
+    "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "DynamoDBObjectMapper": {
+    "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "PinpointAnalytics": {
+    "Default": {
+      "AppId": "20ba7272e49d49e2b5f17f01f5c7f0f3",
+      "Region": "us-east-1"
+    }
+  },
+  "PinpointTargeting": {
+    "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "UserFileManager": {
+    "Default": {
+      "Bucket": "beachtrade-userfiles-mobilehub-845894310",
+      "Region": "us-east-1"
+    }
+  }
+}
