@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -48,19 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         login.registerCallback(cbManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 facebookID = loginResult.getAccessToken().getUserId();
                 AccessToken accessToken = loginResult.getAccessToken();
                 testText.setText(facebookID);
                 new FacebookCognitoSync().execute(accessToken.getToken());//Cognito integration that works as an async task in the background
-
-
-
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-
-
-
             }
 
             @Override
@@ -85,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         cbManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
 
