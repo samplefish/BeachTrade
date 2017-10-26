@@ -52,7 +52,7 @@
             android:name=".NavigationBarActivity"
             android:label="@string/title_activity_navigation_bar"
             android:theme="@style/AppTheme" />
-
+        <activity android:name=".FirstTimeActivity"></activity>
     </application>
 
 </manifest>

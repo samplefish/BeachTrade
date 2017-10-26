@@ -2,6 +2,7 @@ package com.example.tyren.beachtrade;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
 /**
@@ -55,7 +56,7 @@ public class ProfileMapperClass {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    @DynamoDBAttribute(attributeName = "userName")
+    @DynamoDBIndexHashKey(attributeName = "userName")
     public String getUserName() {
         return userName;
     }

@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
     EditText phoneNumber;
     ProfileMapperClass retrievedProfile;
 
+    String tUserName;
     String tFirstName ;
     String tLastName;
     String tEmailAddress ;
@@ -69,6 +70,7 @@ public class ProfileFragment extends Fragment {
                 tLastName = lastname.getText().toString();
                 tEmailAddress = emailAddress.getText().toString();
                 tPhoneNumber = phoneNumber.getText().toString();
+                tUserName = username.getText().toString();
                 new ProfileFragment.updateDetails().execute();
             }
         });
@@ -101,11 +103,18 @@ public class ProfileFragment extends Fragment {
         }
         protected void onPostExecute(Integer integer){
             super.onPostExecute(integer);
-            username.setText(retrievedProfile.getUserName());
-            emailAddress.setText(retrievedProfile.getEmailAddress());
-            firstname.setText(retrievedProfile.getFirstName());
-            lastname.setText(retrievedProfile.getLastName());
-            phoneNumber.setText(retrievedProfile.getPhoneNumber());
+            if(retrievedProfile != null){
+                username.setText(retrievedProfile.getUserName());
+                emailAddress.setText(retrievedProfile.getEmailAddress());
+                firstname.setText(retrievedProfile.getFirstName());
+                lastname.setText(retrievedProfile.getLastName());
+                phoneNumber.setText(retrievedProfile.getPhoneNumber());
+            }
+            if(emailAddress.getText().toString() == "")
+            {
+                emailAddress.setHint("first name not set");
+            }
+
             if(integer ==1)
             {
                 //Toast.makeText(NavigationBarActivity.class, "good to go", Toast.LENGTH_SHORT).show();
@@ -132,7 +141,7 @@ public class ProfileFragment extends Fragment {
             String userID = accessToken.getUserId();
 
             ProfileMapperClass profileMapper = new ProfileMapperClass();
-
+            profileMapper.setUserName(tUserName);
             profileMapper.setUserID(userID);
             profileMapper.setEmailAddress(tEmailAddress);
             profileMapper.setFirstName(tFirstName);
