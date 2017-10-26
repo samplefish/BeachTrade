@@ -31,6 +31,11 @@ public class ProfileFragment extends Fragment {
     EditText phoneNumber;
     ProfileMapperClass retrievedProfile;
 
+    String tFirstName ;
+    String tLastName;
+    String tEmailAddress ;
+    String tPhoneNumber;
+
     Button saveButton;
 
     @Override
@@ -46,6 +51,8 @@ public class ProfileFragment extends Fragment {
 
         View v = getView();
         username = (EditText) v.findViewById(R.id.username);
+        username.setEnabled(false);
+
         firstname = (EditText) v.findViewById(R.id.firstname);
         lastname = (EditText) v.findViewById(R.id.lastname);
         emailAddress = (EditText) v.findViewById(R.id.emailAddress);
@@ -55,6 +62,16 @@ public class ProfileFragment extends Fragment {
 
         new ProfileFragment.getDetails().execute();
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tFirstName = firstname.getText().toString();
+                tLastName = lastname.getText().toString();
+                tEmailAddress = emailAddress.getText().toString();
+                tPhoneNumber = phoneNumber.getText().toString();
+                new ProfileFragment.updateDetails().execute();
+            }
+        });
     }
 
     private class getDetails extends AsyncTask<Void, Integer, Integer> {
@@ -76,7 +93,7 @@ public class ProfileFragment extends Fragment {
 
             if(credentialsProvider != null && profileMapper != null){
                 DynamoDBMapper dynamoDBMapper = ManagerClass.intiDynamoClient(credentialsProvider);
-                retrievedProfile = dynamoDBMapper.load(ProfileMapperClass.class, "idman");
+                retrievedProfile = dynamoDBMapper.load(ProfileMapperClass.class, userID);
             }
 
 
@@ -96,6 +113,48 @@ public class ProfileFragment extends Fragment {
             else{
                 Log.e("Bad stuff...","");
             }
+        }
+
+
+    }
+    private class updateDetails extends AsyncTask<Void, Integer, Integer>{
+        @Override
+        protected Integer doInBackground(Void... params){
+
+            ManagerClass managerClass = new ManagerClass();
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                   getActivity().getApplicationContext(),
+                    "us-east-1:6ec4d10e-5eff-4422-8388-af344a4a3923", // Identity pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            String userID = accessToken.getUserId();
+
+            ProfileMapperClass profileMapper = new ProfileMapperClass();
+
+            profileMapper.setUserID(userID);
+            profileMapper.setEmailAddress(tEmailAddress);
+            profileMapper.setFirstName(tFirstName);
+            profileMapper.setLastName(tLastName);
+            profileMapper.setPhoneNumber(tPhoneNumber);
+
+
+            if(credentialsProvider != null && profileMapper != null){
+                DynamoDBMapper dynamoDBMapper = ManagerClass.intiDynamoClient(credentialsProvider);
+                dynamoDBMapper.save(profileMapper);
+            }
+
+
+            return 1;
+        }
+        protected void onPostExecute(Integer integer){
+            super.onPostExecute(integer);
+            if(integer ==1)
+            {
+                Toast.makeText(getActivity(), "Your profile details have been updated!", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
 
