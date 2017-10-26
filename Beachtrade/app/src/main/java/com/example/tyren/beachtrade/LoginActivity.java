@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         login = (LoginButton) findViewById(R.id.login_button);
         testText = (TextView) findViewById(R.id.textView);
         if( accessToken != null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
         }
 
 
@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                 accessToken = loginResult.getAccessToken();
                 testText.setText(facebookID);
                 new FacebookCognitoSync().execute(accessToken.getToken());//Cognito integration that works as an async task in the background
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
+
             }
 
             @Override
