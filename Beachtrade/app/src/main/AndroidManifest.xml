@@ -47,11 +47,12 @@
 
         <activity android:name=".MainActivity" />
         <activity android:name=".SubmitItemActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".NavigationBarActivity"
             android:label="@string/title_activity_navigation_bar"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+
     </application>
 
 </manifest>

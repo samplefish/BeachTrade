@@ -71,6 +71,9 @@ public class ProfileActivity extends AppCompatActivity {
             super.onPostExecute(integer);
             username.setText(retrievedProfile.getUserName());
             emailAddress.setText(retrievedProfile.getEmailAddress());
+            firstname.setText(retrievedProfile.getFirstName());
+            lastname.setText(retrievedProfile.getLastName());
+            phoneNumber.setText(retrievedProfile.getPhoneNumber());
             if(integer ==1)
             {
                 Toast.makeText(ProfileActivity.this, "good to go", Toast.LENGTH_SHORT).show();

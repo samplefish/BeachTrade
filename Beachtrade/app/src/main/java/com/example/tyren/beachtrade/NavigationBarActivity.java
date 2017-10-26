@@ -80,9 +80,9 @@ public class NavigationBarActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_first_layout) {
+        if (id == R.id.nav_fragment_profile) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                    new FirstFragment()).commit();
+                    new ProfileFragment()).commit();
         } else if (id == R.id.nav_second_layout) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
                     new SecondFragment()).commit();
