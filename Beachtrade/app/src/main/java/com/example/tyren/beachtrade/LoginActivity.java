@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     LoginButton login;
     CallbackManager cbManager;
     LoginButton register;
+    AccessToken accessToken;
     String facebookID;
     TextView testText;
     EditText etUsername, etPassword;
@@ -44,23 +45,20 @@ public class LoginActivity extends AppCompatActivity {
         cbManager = CallbackManager.Factory.create();
         login = (LoginButton) findViewById(R.id.login_button);
         testText = (TextView) findViewById(R.id.textView);
+        if( accessToken != null){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
+
 
         login.registerCallback(cbManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
                 facebookID = loginResult.getAccessToken().getUserId();
-                AccessToken accessToken = loginResult.getAccessToken();
+                accessToken = loginResult.getAccessToken();
                 testText.setText(facebookID);
                 new FacebookCognitoSync().execute(accessToken.getToken());//Cognito integration that works as an async task in the background
-
-
-
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-
-
-
             }
 
             @Override

@@ -46,7 +46,8 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".SubmitItemActivity"></activity>
+        <activity android:name=".SubmitItemActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

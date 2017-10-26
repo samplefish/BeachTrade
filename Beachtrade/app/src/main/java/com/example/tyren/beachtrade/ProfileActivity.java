@@ -1,18 +1,11 @@
 package com.example.tyren.beachtrade;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -20,39 +13,33 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.regions.Regions;
 import com.facebook.AccessToken;
 
-public class MainActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
-    Button sellButton;
-    TextView emailView, userIDView;
+    EditText username;
+    EditText firstname;
+    EditText lastname;
+    EditText emailAddress;
+    EditText phoneNumber;
     ProfileMapperClass retrievedProfile;
 
-    @Override
+    Button saveButton;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
-        emailView = (TextView) findViewById(R.id.emailView);
-        userIDView = (TextView) findViewById(R.id.userIDView);
-        sellButton = (Button) findViewById(R.id.sellButton);
+        username = (EditText) findViewById(R.id.username);
+        firstname = (EditText) findViewById(R.id.firstname);
+        lastname = (EditText) findViewById(R.id.lastname);
+        emailAddress = (EditText) findViewById(R.id.emailAddress);
+        phoneNumber = (EditText) findViewById(R.id.phoneNumber);
 
-        sellButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SubmitItemActivity.class);
-                startActivity(intent);
-            }
-        });
+        saveButton = (Button) findViewById(R.id.bSave);
 
         new getDetails().execute();
 
 
 
-
-
-
-    }
-
-    public void onBackPressed() {
     }
 
     private class getDetails extends AsyncTask<Void, Integer, Integer> {
@@ -82,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
         }
         protected void onPostExecute(Integer integer){
             super.onPostExecute(integer);
-            userIDView.setText(retrievedProfile.getUserID());
-            emailView.setText(retrievedProfile.getEmailAddress());
+            username.setText(retrievedProfile.getUserName());
+            emailAddress.setText(retrievedProfile.getEmailAddress());
             if(integer ==1)
             {
-                Toast.makeText(MainActivity.this, "good to go", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "good to go", Toast.LENGTH_SHORT).show();
             }
             else{
                 Log.e("Bad stuff...","");
@@ -95,7 +82,4 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
-
 }
