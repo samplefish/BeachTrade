@@ -46,7 +46,11 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".SubmitItemActivity"></activity>
+        <activity android:name=".SubmitItemActivity" />
+        <activity
+            android:name=".NavigationBarActivity"
+            android:label="@string/title_activity_navigation_bar"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

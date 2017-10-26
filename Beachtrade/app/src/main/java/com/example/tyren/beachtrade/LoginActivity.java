@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
 
 
 
