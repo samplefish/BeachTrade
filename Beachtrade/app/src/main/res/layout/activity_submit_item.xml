@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:layout_width="match_parent"
-    tools:context="com.example.tyren.beachtrade.MainActivity">>
+    >>
 
     <TextView
         android:layout_width="wrap_content"
