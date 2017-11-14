@@ -40,6 +40,8 @@ public class NavigationBarActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                new FirstFragment()).commit();
     }
 
     @Override
@@ -83,9 +85,9 @@ public class NavigationBarActivity extends AppCompatActivity
         if (id == R.id.nav_fragment_profile) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
                     new ProfileFragment()).commit();
-        } else if (id == R.id.nav_second_layout) {
+        } else if (id == R.id.nav_first_layout) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                    new SecondFragment()).commit();
+                    new FirstFragment()).commit();
 
         } else if (id == R.id.nav_third_layout) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
