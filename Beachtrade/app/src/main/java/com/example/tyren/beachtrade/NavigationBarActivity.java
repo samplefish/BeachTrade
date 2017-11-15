@@ -1,5 +1,6 @@
 package com.example.tyren.beachtrade;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,12 +14,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+
 public class NavigationBarActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        accessToken = AccessToken.getCurrentAccessToken();
+
         setContentView(R.layout.activity_navigation_bar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,6 +52,18 @@ public class NavigationBarActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*new GraphRequest(
+                accessToken.getCurrentAccessToken(),
+                "/{user-id}",
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+            /* handle the result//
+                    }
+                }
+        ).executeAsync();*/
     }
 
     @Override
@@ -68,7 +92,9 @@ public class NavigationBarActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(NavigationBarActivity.this, LoginActivity.class);
+            LoginManager.getInstance().logOut();
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

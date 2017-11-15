@@ -1,28 +1,52 @@
 package com.example.tyren.beachtrade;
 
 
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.facebook.AccessToken;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
+
+    private static final int RESULT_LOAD_IMAGE = 1;
+    ImageView profileImage;
+    File downloadedImage;
 
     EditText username;
     EditText firstname;
@@ -37,6 +61,9 @@ public class ProfileFragment extends Fragment {
     String tEmailAddress ;
     String tPhoneNumber;
 
+    AccessToken accessToken;
+    String userID;
+
     Button saveButton;
 
     @Override
@@ -49,8 +76,13 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-
+        accessToken = AccessToken.getCurrentAccessToken();
+        userID = accessToken.getUserId();
+        downloadedImage = null;
         View v = getView();
+
+        profileImage = (ImageView) v.findViewById(R.id.imageToUpload);
+
         username = (EditText) v.findViewById(R.id.username);
         username.setEnabled(false);
 
@@ -63,6 +95,14 @@ public class ProfileFragment extends Fragment {
 
         new ProfileFragment.getDetails().execute();
 
+        profileImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +112,7 @@ public class ProfileFragment extends Fragment {
                 tPhoneNumber = phoneNumber.getText().toString();
                 tUserName = username.getText().toString();
                 new ProfileFragment.updateDetails().execute();
+                //new ProfileFragment.downloadImage().execute();
             }
         });
     }
@@ -87,8 +128,6 @@ public class ProfileFragment extends Fragment {
                     Regions.US_EAST_1 // Region
             );
 
-            AccessToken accessToken = AccessToken.getCurrentAccessToken();
-            String userID = accessToken.getUserId();
 
             ProfileMapperClass profileMapper = new ProfileMapperClass();
 
@@ -169,5 +208,37 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private class downloadImage extends AsyncTask<Void, Void, Void>{
+        Dialog dialog;
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
 
+
+        }
+        @Override
+        protected Void doInBackground(Void... params){
+            ManagerClass managerClass = new ManagerClass();
+            managerClass.getCredentials(getActivity());
+            AmazonS3Client s3Client = managerClass.initS3Client(getActivity());
+            TransferUtility transferUtility = managerClass.checkTransferUtility(s3Client, getActivity().getApplicationContext());
+            downloadedImage = new File(Environment.getExternalStorageDirectory().toString() + "/64897429_p0.png");
+            TransferObserver observer = transferUtility.download("beachtrade","64897429_p0.png",downloadedImage);
+            return null;
+        }
+
+        protected void onPostExecute(){
+            Bitmap bitmap = BitmapFactory.decodeFile(downloadedImage.getPath());
+            profileImage.setImageBitmap(bitmap);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RESULT_LOAD_IMAGE &&  resultCode == RESULT_OK && data != null){
+            Uri selectedImage = data.getData();
+            profileImage.setImageURI(selectedImage);
+        }
+    }
 }

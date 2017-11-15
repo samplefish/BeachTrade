@@ -27,6 +27,8 @@ public class ManagerClass {
     public static AmazonDynamoDBClient dynamoDBClient=null;
     public static DynamoDBMapper dynamoDBMapper=null;
 
+
+
     public CognitoCachingCredentialsProvider getCredentials(Context context){
         credentialsProvider = new CognitoCachingCredentialsProvider(context,
                 "us-east-1:6ec4d10e-5eff-4422-8388-af344a4a3923",
@@ -52,5 +54,27 @@ public class ManagerClass {
             dynamoDBMapper = new DynamoDBMapper(dynamoDBClient);
         }
         return dynamoDBMapper;
+    }
+
+    public AmazonS3Client initS3Client(Context context){
+        if(credentialsProvider == null){
+            getCredentials(context);
+            s3Client=new AmazonS3Client(credentialsProvider);
+            s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+        }
+        return s3Client;
+    }
+
+    public TransferUtility checkTransferUtility(AmazonS3Client s3Client, Context context){
+        /*if(transferUtility == null){
+            transferUtility= new TransferUtility(s3Client,context);
+            return transferUtility;
+        }
+        else{
+            return transferUtility;
+        }*/
+        transferUtility= new TransferUtility(s3Client,context);
+        return transferUtility;
     }
 }

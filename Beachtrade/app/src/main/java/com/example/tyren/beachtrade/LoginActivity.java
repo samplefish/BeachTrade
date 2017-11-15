@@ -56,10 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         cbManager = CallbackManager.Factory.create();
         login = (LoginButton) findViewById(R.id.login_button);
         testText = (TextView) findViewById(R.id.textView);
+        accessToken = AccessToken.getCurrentAccessToken();
+
         if(accessToken != null){
-            if( !accessToken.getCurrentAccessToken().isExpired()){
-                startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
-            }
+            Log.e("Access token not null!!", "NOT!");
+            startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
+
 
         }
 
@@ -145,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
+                    finish();
                 }
             }
             if(retrievedProfile == null){
