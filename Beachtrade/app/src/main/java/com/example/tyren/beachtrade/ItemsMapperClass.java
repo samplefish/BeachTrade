@@ -21,7 +21,11 @@ public class ItemsMapperClass {
     String itemType;
 
 
-    @DynamoDBHashKey(attributeName = "userID")
+    @DynamoDBHashKey(attributeName = "itemID")
+    @DynamoDBAttribute(attributeName = "itemID")
+    public String getItemID() {return itemID;}
+    public void setItemID(String itemID){this.itemID = itemID;}
+
     @DynamoDBAttribute(attributeName = "userID")
     public String getUserID() {
         return userID;
@@ -58,9 +62,7 @@ public class ItemsMapperClass {
         this.pictureLink = pictureLink;
     }
 
-    @DynamoDBAttribute(attributeName = "itemID")
-    public String getItemID() {return itemID;}
-    public void setItemID(String itemID){this.itemID = itemID;}
+
 
     @DynamoDBAttribute(attributeName = "itemType")
     public String getItemType(){return itemType;}

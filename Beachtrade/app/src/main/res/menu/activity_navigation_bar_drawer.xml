@@ -3,9 +3,16 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_first_layout"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Home" />
+
+
+        <item
             android:id="@+id/nav_fragment_profile"
             android:icon="@drawable/ic_menu_camera"
             android:title="My Profile" />
+
         <item
             android:id="@+id/nav_second_layout"
             android:icon="@drawable/ic_menu_gallery"
