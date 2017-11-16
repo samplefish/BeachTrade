@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:layout_width="match_parent">>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:id="@+id/itemView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Username"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/getUserName"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Item name"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/getItemName"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Price"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/getPrice"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:digits="0123456789."
+                android:inputType="numberDecimal"
+                android:singleLine="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Description"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/getDescription"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Type"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/aspinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btDelete"
+                android:text="Delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btContact"
+                android:text="Contact Seller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
