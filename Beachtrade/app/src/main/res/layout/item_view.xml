@@ -74,12 +74,12 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/bDelete"
+                android:id="@+id/btDelete"
                 android:text="Delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
-                android:id="@+id/bContact"
+                android:id="@+id/btContact"
                 android:text="Contact Seller"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
