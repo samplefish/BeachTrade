@@ -9,6 +9,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+
+    <string-array name="item_type_array">
+        <item>Books</item>
+        <item>Technology</item>
+        <item>Places</item>
+        <item>Other</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

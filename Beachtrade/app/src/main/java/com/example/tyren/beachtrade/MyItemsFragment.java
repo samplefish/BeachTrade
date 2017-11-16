@@ -6,14 +6,12 @@ package com.example.tyren.beachtrade;
 
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,23 +22,22 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import com.facebook.AccessToken;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class FirstFragment extends Fragment {
+public class MyItemsFragment extends Fragment {
 
     Button newPostButton;
     Dialog progress;
     ScanResult result;
     RecyclerView recyclerView;
+    AccessToken accessToken;
 
 
     @Nullable
@@ -140,9 +137,16 @@ public class FirstFragment extends Fragment {
             );
             AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
             DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
+            accessToken = AccessToken.getCurrentAccessToken();
+
+            String userID = accessToken.getUserId();
+
+            Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+            eav.put(":val1", new AttributeValue().withS(userID));
 
 
-            ScanRequest scanRequest = new ScanRequest().withTableName("userItems");
+
+            ScanRequest scanRequest = new ScanRequest().withTableName("userItems").withFilterExpression("userID = :val1").withExpressionAttributeValues(eav);
 
             result = ddbClient.scan(scanRequest);
 

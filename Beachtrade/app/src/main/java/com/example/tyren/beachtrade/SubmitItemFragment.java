@@ -18,9 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -52,9 +55,13 @@ public class SubmitItemFragment extends Fragment {
     AccessToken accessToken;
     String userID;
 
-    EditText itemName;
+    EditText etItemName;
+    EditText etDescription;
+    EditText etPrice;
+    Spinner typeSpinner;
+
     Button submit;
-    String mName;
+    String name;
 
     Double price;
     String description;
@@ -62,7 +69,6 @@ public class SubmitItemFragment extends Fragment {
     String itemID;
     String itemType;
 
-    Button saveButton;
     View v;
 
     List<ItemsMapperClass> result;
@@ -82,23 +88,48 @@ public class SubmitItemFragment extends Fragment {
         accessToken = AccessToken.getCurrentAccessToken();
         userID = accessToken.getUserId();
         v = getView();
+        itemType = "No item selected";
+        etItemName = (EditText) v.findViewById(R.id.etItemName);
+        etDescription = (EditText) v.findViewById(R.id.etDescription);
+        etPrice= (EditText)v.findViewById(R.id.etPrice);
+        typeSpinner = (Spinner) v.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.item_type_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                itemType = parent.getItemAtPosition(position).toString();
+            }
 
-        itemName = (EditText) v.findViewById(R.id.etItemName);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                itemType = "No type selected";
+            }
+        });{
+
+        };
         submit = (Button) v.findViewById(R.id.bSubmit);
 
-        price = 0.99;
-        description = "lettuce";
+
         pictureLink = "chicken.jpg";
-        itemType = "ice cream";
+
 
 
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mName = itemName.getText().toString();
-                new SubmitItemFragment.checkItems().execute();
-
+                if(itemType != "No item selected"){
+                    name = etItemName.getText().toString();
+                    price = Double.parseDouble(etPrice.getText().toString());
+                    description = etDescription.getText().toString();
+                    new SubmitItemFragment.checkItems().execute();
+                }
+                else{
+                    Toast.makeText(getActivity(), "Please select a type", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -163,7 +194,7 @@ public class SubmitItemFragment extends Fragment {
             String userID = accessToken.getUserId();
 
             ItemsMapperClass itemMapper = new ItemsMapperClass();
-            itemMapper.setItemName(mName);
+            itemMapper.setItemName(name);
             itemMapper.setPrice(price);
             itemMapper.setDescription(description);
             itemMapper.setItemID(userID+""+resultSize);

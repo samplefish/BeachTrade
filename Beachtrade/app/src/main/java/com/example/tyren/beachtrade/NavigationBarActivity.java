@@ -35,14 +35,7 @@ public class NavigationBarActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -117,9 +110,9 @@ public class NavigationBarActivity extends AppCompatActivity
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
                     new FirstFragment()).commit();
 
-        } else if (id == R.id.nav_third_layout) {
+        } else if (id == R.id.nav_my_items) {
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                    new ThirdFragment()).commit();
+                    new MyItemsFragment()).commit();
 
         } else if (id == R.id.nav_share) {
 
