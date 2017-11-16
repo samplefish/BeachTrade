@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -75,6 +76,8 @@ public class SubmitItemFragment extends Fragment {
     Integer resultSize;
     ProgressDialog progress;
 
+    SharedPreferences prefs;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,12 +85,15 @@ public class SubmitItemFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_submit_item, container, false);
     }
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         accessToken = AccessToken.getCurrentAccessToken();
         userID = accessToken.getUserId();
         v = getView();
+        prefs = getActivity().getSharedPreferences(
+                "com.example.tyren.beachtrade", Context.MODE_PRIVATE);
         itemType = "No item selected";
         etItemName = (EditText) v.findViewById(R.id.etItemName);
         etDescription = (EditText) v.findViewById(R.id.etDescription);
@@ -200,6 +206,7 @@ public class SubmitItemFragment extends Fragment {
             itemMapper.setItemID(userID+""+resultSize);
             itemMapper.setPictureLink(pictureLink);
             itemMapper.setItemType(itemType);
+            itemMapper.setUsername(prefs.getString("userName",null));
 
 
             itemMapper.setUserID(userID);

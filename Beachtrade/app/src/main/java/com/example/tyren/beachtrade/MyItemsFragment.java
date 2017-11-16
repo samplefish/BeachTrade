@@ -50,7 +50,7 @@ public class MyItemsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //
         // recyclerView.setAdapter(new RecyclerViewAdapter(list));
-        new checkItems().execute();
+        new getUserItems().execute();
 
         return view;
     }
@@ -76,10 +76,21 @@ public class MyItemsFragment extends Fragment {
         private TextView mTypeView;
         private TextView mNameView;
         private TextView mDescription;
+        private String itemID;
+
+        public View view;
 
         private TextView mPriceView;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View itemView){
+
+                }
+            });
+
         }
 
         public RecyclerViewHolder(LayoutInflater inflater, ViewGroup container) {
@@ -90,6 +101,7 @@ public class MyItemsFragment extends Fragment {
             mDescription = (TextView) itemView.findViewById(R.id.desc);
             mPriceView = (TextView) itemView.findViewById(R.id.price);
             mTypeView = (TextView) itemView.findViewById(R.id.type);
+
         }
     }
 
@@ -109,10 +121,12 @@ public class MyItemsFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-            holder.mTypeView.setText(result.getItems().get(position).get("itemType").toString().replace("{S:","").replace(",}",""));
-            holder.mNameView.setText(result.getItems().get(position).get("itemName").toString().replace("{S:","").replace(",}",""));
-            holder.mPriceView.setText("$"+result.getItems().get(position).get("price").toString().replace("{N:","").replace(",}",""));
-            holder.mDescription.setText(result.getItems().get(position).get("description").toString().replace("{S:","").replace(",}",""));
+            //holder.mTypeView.setText(result.getItems().get(position).get("itemType").toString().replace("{S:","").replace(",}",""));
+            holder.mTypeView.setText(result.getItems().get(position).get("itemType").getS());
+            holder.mNameView.setText(result.getItems().get(position).get("itemName").getS());
+            holder.mPriceView.setText("$"+result.getItems().get(position).get("price").getN());
+            holder.mDescription.setText(result.getItems().get(position).get("description").getS());
+            holder.itemID = result.getItems().get(position).get("itemID").getS();
 
         }
 
@@ -122,7 +136,7 @@ public class MyItemsFragment extends Fragment {
         }
     }
 
-    public class checkItems extends AsyncTask<Void, Integer, Integer> {
+    public class getUserItems extends AsyncTask<Void, Integer, Integer> {
         protected void onPreExecute(){
             /*progress = new ProgressDialog(getActivity());
             progress.setMessage("Working...");

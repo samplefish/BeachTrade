@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(accessToken != null){
             Log.e("Access token not null!!", "NOT!");
+            Toast.makeText(LoginActivity.this, "Logged in from previous session", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, NavigationBarActivity.class));
 
 
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             if(integer ==1)
             {
-                Toast.makeText(LoginActivity.this, "Succ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
             }
             else{
                 Log.e("Bad stuff...","");

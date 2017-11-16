@@ -1,9 +1,13 @@
 package com.example.tyren.beachtrade;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.regions.Regions;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -24,7 +32,8 @@ public class NavigationBarActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     AccessToken accessToken;
-
+    ProfileMapperClass retrievedProfile;
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +44,8 @@ public class NavigationBarActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        prefs = this.getSharedPreferences(
+                "com.example.tyren.beachtrade", Context.MODE_PRIVATE);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,6 +68,7 @@ public class NavigationBarActivity extends AppCompatActivity
                     }
                 }
         ).executeAsync();*/
+        new getUsername().execute();
 
         getFragmentManager().beginTransaction().replace(R.id.content_frame,
                 new FirstFragment()).commit();
@@ -69,7 +81,7 @@ public class NavigationBarActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
         }
     }
 
@@ -77,6 +89,7 @@ public class NavigationBarActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation_bar, menu);
+
         return true;
     }
 
@@ -124,4 +137,41 @@ public class NavigationBarActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private class getUsername extends AsyncTask<Void, Integer, Integer> {
+        @Override
+        protected Integer doInBackground(Void... params){
+
+            ManagerClass managerClass = new ManagerClass();
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:6ec4d10e-5eff-4422-8388-af344a4a3923", // Identity pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+
+            ProfileMapperClass profileMapper = new ProfileMapperClass();
+
+
+            if(credentialsProvider != null && profileMapper != null){
+                DynamoDBMapper dynamoDBMapper = ManagerClass.intiDynamoClient(credentialsProvider);
+                retrievedProfile = dynamoDBMapper.load(ProfileMapperClass.class, accessToken.getUserId());
+            }
+
+
+            return 1;
+        }
+        protected void onPostExecute(Integer integer){
+            super.onPostExecute(integer);
+            if(retrievedProfile != null){
+                prefs.edit().putString("userName", retrievedProfile.getUserName()).apply();
+                String username = prefs.getString("userName", null);
+                Toast.makeText(NavigationBarActivity.this, "Welcome, "+username, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+    }
+
+
 }

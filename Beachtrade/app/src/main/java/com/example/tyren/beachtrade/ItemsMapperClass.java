@@ -19,6 +19,7 @@ public class ItemsMapperClass {
     String pictureLink;
     String itemID;
     String itemType;
+    String username;
 
 
     @DynamoDBHashKey(attributeName = "itemID")
@@ -62,6 +63,14 @@ public class ItemsMapperClass {
         this.pictureLink = pictureLink;
     }
 
+    @DynamoDBAttribute(attributeName = "username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
 
     @DynamoDBAttribute(attributeName = "itemType")
