@@ -6,6 +6,7 @@ package com.example.tyren.beachtrade;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -83,13 +84,14 @@ public class MyItemsFragment extends Fragment {
         private TextView mPriceView;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            view = itemView;
+            /*view = itemView;
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View itemView){
-
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                            new ViewItemFragment()).commit();
                 }
-            });
+            });*/
 
         }
 
@@ -115,6 +117,15 @@ public class MyItemsFragment extends Fragment {
         @Override
         public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View view = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.first_layout, parent, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int itemPosition = recyclerView.indexOfChild(v);
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                            new ViewItemFragment()).commit();
+                }
+            });
             return new RecyclerViewHolder(inflater, parent);
         }
 
@@ -129,6 +140,8 @@ public class MyItemsFragment extends Fragment {
             holder.itemID = result.getItems().get(position).get("itemID").getS();
 
         }
+
+
 
         @Override
         public int getItemCount() {
