@@ -78,6 +78,7 @@ public class MyItemsFragment extends Fragment {
         private TextView mNameView;
         private TextView mDescription;
         private String itemID;
+        private TextView mEmail;
 
         public View view;
 
@@ -103,6 +104,7 @@ public class MyItemsFragment extends Fragment {
             mDescription = (TextView) itemView.findViewById(R.id.desc);
             mPriceView = (TextView) itemView.findViewById(R.id.price);
             mTypeView = (TextView) itemView.findViewById(R.id.type);
+            mEmail = (TextView) itemView.findViewById(R.id.mail);
 
         }
     }
@@ -138,7 +140,7 @@ public class MyItemsFragment extends Fragment {
             holder.mPriceView.setText("$"+result.getItems().get(position).get("price").getN());
             holder.mDescription.setText(result.getItems().get(position).get("description").getS());
             holder.itemID = result.getItems().get(position).get("itemID").getS();
-
+            holder.mEmail.setText(result.getItems().get(position).get("email").getS());
         }
 
 

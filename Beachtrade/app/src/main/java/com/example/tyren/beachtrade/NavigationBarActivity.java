@@ -3,6 +3,7 @@ package com.example.tyren.beachtrade;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -127,7 +128,28 @@ public class NavigationBarActivity extends AppCompatActivity
             getFragmentManager().beginTransaction().replace(R.id.content_frame,
                     new MyItemsFragment()).commit();
 
-        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_third_layout) {
+            Log.i("Send email", "");
+            String[] TO = {""};
+            String[] CC = {""};
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+            emailIntent.setData(Uri.parse("mailto:"));
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+            emailIntent.putExtra(Intent.EXTRA_CC, CC);
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "I am interested in an Item of yours!");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "I'd like to inquire about an item of yours.");
+
+            try {
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                //finish();
+
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(NavigationBarActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            }
+
 
         } else if (id == R.id.nav_send) {
 
@@ -165,6 +187,7 @@ public class NavigationBarActivity extends AppCompatActivity
             super.onPostExecute(integer);
             if(retrievedProfile != null){
                 prefs.edit().putString("userName", retrievedProfile.getUserName()).apply();
+                prefs.edit().putString("email", retrievedProfile.getEmailAddress()).apply();
                 String username = prefs.getString("userName", null);
                 Toast.makeText(NavigationBarActivity.this, "Welcome, "+username, Toast.LENGTH_SHORT).show();
             }

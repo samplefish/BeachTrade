@@ -210,6 +210,8 @@ public class SubmitItemFragment extends Fragment {
 
 
             itemMapper.setUserID(userID);
+            String email = prefs.getString("email", null);
+            itemMapper.setEmail(email);
 
             if(credentialsProvider != null && itemMapper != null){
 

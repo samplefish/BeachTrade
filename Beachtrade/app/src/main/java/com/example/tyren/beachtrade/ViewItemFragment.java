@@ -193,6 +193,7 @@ public class ViewItemFragment extends Fragment {
             itemMapper.setUsername(prefs.getString("userName",null));
 
 
+
             itemMapper.setUserID(userID);
 
             if(credentialsProvider != null && itemMapper != null){

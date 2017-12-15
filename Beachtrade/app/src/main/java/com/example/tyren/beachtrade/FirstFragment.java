@@ -79,7 +79,7 @@ public class FirstFragment extends Fragment {
         private TextView mTypeView;
         private TextView mNameView;
         private TextView mDescription;
-
+private TextView mEmail;
         private TextView mPriceView;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +93,7 @@ public class FirstFragment extends Fragment {
             mDescription = (TextView) itemView.findViewById(R.id.desc);
             mPriceView = (TextView) itemView.findViewById(R.id.price);
             mTypeView = (TextView) itemView.findViewById(R.id.type);
+            mEmail = (TextView) itemView.findViewById(R.id.mail);
         }
     }
 
@@ -116,6 +117,7 @@ public class FirstFragment extends Fragment {
             holder.mNameView.setText(result.getItems().get(position).get("itemName").toString().replace("{S:","").replace(",}",""));
             holder.mPriceView.setText("$"+result.getItems().get(position).get("price").toString().replace("{N:","").replace(",}",""));
             holder.mDescription.setText(result.getItems().get(position).get("description").toString().replace("{S:","").replace(",}",""));
+            holder.mEmail.setText(result.getItems().get(position).get("email").getS());
 
         }
 
